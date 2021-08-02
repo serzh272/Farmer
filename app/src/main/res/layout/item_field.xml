@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="4dp"
+    android:background="@drawable/round_corner_bg"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp">
+
+    <TextView
+        android:id="@+id/tv_field_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Field name"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+    <TextView
+        android:id="@+id/tv_field_area"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="25 га"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+    <TextView
+        android:id="@+id/tv_field_culture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Culture"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_field_name"
+        />
+    <TextView
+        android:id="@+id/tv_sowing_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Culture"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_field_culture"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>

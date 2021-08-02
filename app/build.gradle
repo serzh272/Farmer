@@ -1,12 +1,14 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'androidx.navigation.safeargs.kotlin'
+    id 'kotlin-kapt'
 }
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "31.0.0"
-
+    buildToolsVersion "30.0.3"
+    ndkVersion '22.1.7171670'
     defaultConfig {
         applicationId "ru.serzh272.farmer"
         minSdkVersion 23
@@ -30,6 +32,16 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    buildFeatures{
+        viewBinding = true
+    }
+
+}
+
+repositories {
+    maven {
+        url "http://maven.google.com/"
+    }
 }
 
 dependencies {
@@ -38,7 +50,31 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.6.0'
     implementation 'androidx.appcompat:appcompat:1.3.1'
     implementation 'com.google.android.material:material:1.4.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
+
+    //YandexMaps API
+    implementation 'com.yandex.android:maps.mobile:4.0.0-full'
+
+    //navigation
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
+    //lifecycle
+    implementation 'android.arch.lifecycle:extensions:1.1.1'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    annotationProcessor 'android.arch.lifecycle:common-java8:1.1.1'
+
+    //room
+    implementation 'androidx.room:room-runtime:2.3.0'
+    kapt "androidx.room:room-compiler:2.3.0"
+    implementation "androidx.room:room-ktx:2.3.0"
+
+    //coroutines
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0'
+
+    //testing
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'

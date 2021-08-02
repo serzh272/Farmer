@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav"
+    app:startDestination="@id/fieldsFragment">
+
+    <fragment
+        android:id="@+id/fieldsFragment"
+        android:name="ru.serzh272.farmer.ui.fragments.FieldsFragment"
+        android:label="fragment_fields"
+        tools:layout="@layout/fragment_fields" >
+        <action
+            android:id="@+id/action_fieldsFragment_to_fieldsMapFragment"
+            app:destination="@id/fieldsMapFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/fieldsMapFragment"
+        android:name="ru.serzh272.farmer.ui.fragments.FieldsMapFragment"
+        android:label="fragment_fields_map"
+        tools:layout="@layout/fragment_fields_map" >
+        <argument
+            android:name="init_point"
+            app:argType="ru.serzh272.farmer.PointD"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <argument
+            android:name="zoom"
+            app:argType="float"
+            android:defaultValue="11" />
+    </fragment>
+</navigation>

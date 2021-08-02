@@ -1,3 +1,16 @@
 <resources>
-    <string name="app_name">Farmer</string>
+    <string name="app_name">Farmland</string>
+    <string name="name_label_text">Name: %1$s</string>
+    <string name="culture_label_text">Culture: %1$s</string>
+    <string name="sowing_date_label_text">Sowing date: %1$s</string>
+    <string name="menu_search_title">Search of places</string>
+    <string name="name_of_field">Name of field</string>
+    <string name="name_of_culture">Name of culture</string>
+    <string name="open_map">Open map</string>
+    <string name="add_new_field">Add new field</string>
+    <string name="apply">Apply</string>
+    <string name="close_info">Close info</string>
+    <string name="error_blank_name">Name don\'t may be blank</string>
+    <string name="error_blank_culture">Culture don\'t may be blank                                         }</string>
+    <string name="add_field_dialog_title">Enter field parameters</string>
 </resources>

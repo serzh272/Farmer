@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Фермерские угодья</string>
+    <string name="name_label_text">Наименование: %1$s</string>
+    <string name="culture_label_text">Культура: %1$s</string>
+    <string name="sowing_date_label_text">Дата посева: %1$s</string>
+    <string name="menu_search_title">Поиск мест</string>
+    <string name="name_of_field">Наименование поля</string>
+    <string name="name_of_culture">Наименование культуры</string>
+    <string name="open_map">Открыть карту</string>
+    <string name="add_new_field">Добавить новое поле</string>
+    <string name="apply">Применить</string>
+    <string name="close_info">Скрыть информацию</string>
+    <string name="error_blank_name">Наименование не может быть пустым</string>
+    <string name="error_blank_culture">Название культуры не может быть пустым</string>
+    <string name="add_field_dialog_title">Введите параметры поля</string>
+</resources>

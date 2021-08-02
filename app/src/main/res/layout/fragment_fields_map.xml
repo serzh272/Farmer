@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragments.FieldsMapFragment">
+    <ru.serzh272.farmer.ui.custom.FarmerMapView
+        android:id="@+id/map_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </ru.serzh272.farmer.ui.custom.FarmerMapView>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_current_position"
+        android:contentDescription="@string/add_new_field"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:src="@drawable/ic_my_location_24"
+        app:layout_anchor="@id/map_view"
+        app:layout_anchorGravity="center|right"
+        android:layout_gravity="top"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="80dp"
+        app:layout_dodgeInsetEdges="bottom"/>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_add"
+        android:contentDescription="@string/add_new_field"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:src="@drawable/ic_add_24"
+        app:layout_anchor="@id/map_view"
+        app:layout_anchorGravity="bottom|right"
+        android:layout_gravity="top"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+        app:layout_dodgeInsetEdges="bottom"/>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_apply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_check_24"
+        app:layout_anchor="@id/fab_add"
+        app:layout_anchorGravity="bottom|right"
+        app:layout_dodgeInsetEdges="bottom"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:contentDescription="@string/apply" />
+    <include layout="@layout/bottom_sheet_field_info"
+        android:id="@+id/bottom_sheet"/>
+    <include layout="@layout/bottom_sheet_search_dialog"
+        android:id="@+id/bottom_sheet_search"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

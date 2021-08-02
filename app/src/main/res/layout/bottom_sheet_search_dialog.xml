@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:id="@+id/bottom_sheet_search_layout"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/bottom_sheet_bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp"
+    app:behavior_fitToContents="false"
+    app:behavior_halfExpandedRatio="0.25"
+    app:behavior_hideable="true"
+    app:behavior_skipCollapsed="false"
+    app:layout_behavior="@string/bottom_sheet_behavior"
+    tools:itemCount="5"
+    tools:listitem="@layout/item_search"
+    android:visibility="gone"
+    app:layout_insetEdge="bottom">
+
+</androidx.recyclerview.widget.RecyclerView>
