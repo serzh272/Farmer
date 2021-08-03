@@ -12,7 +12,7 @@ interface FieldDao : BaseDao<Field> {
         WHERE id = :id
     """
     )
-    fun getFieldById(id: Int): LiveData<Field>
+    suspend fun getFieldById(id: Int): Field
 
     @Query(
         """

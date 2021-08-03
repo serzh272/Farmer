@@ -48,9 +48,8 @@ private val CURRENT_POSITION = Point(52.058035, 113.485333)
 
 @AndroidEntryPoint
 class FieldsMapFragment : Fragment(), Session.SearchListener {
-
     private var searchView: SearchView? = null
-    private var menuItem: MenuItem? = null
+    private var searchMenuItem: MenuItem? = null
     private var newField: Field? = null
     private val args by navArgs<FieldsMapFragmentArgs>()
     private val viewModel: SharedViewModel by activityViewModels()
@@ -63,46 +62,6 @@ class FieldsMapFragment : Fragment(), Session.SearchListener {
     }
     private val bsbSearch by lazy {
         BottomSheetBehavior.from(binding.bottomSheetSearch.bottomSheetSearchLayout)
-    }
-    private val mapObjTapListener: MapObjectTapListener = MapObjectTapListener { obj, p ->
-        menuItem?.collapseActionView()
-        viewModel.handleSearchMode(false)
-        binding.mapView.map.mapObjects.removeAllPlacemarks()
-        binding.mapView.map.mapObjects.addPlacemark(
-            p,
-            ImageProvider.fromResource(requireContext(), R.mipmap.ic_field_info)
-        )
-        updateBottomSheet(obj.userData as Field)
-        bsb.state = BottomSheetBehavior.STATE_COLLAPSED
-        bsbSearch.state = BottomSheetBehavior.STATE_HIDDEN
-        val scrP = p.toScreenPoint(binding.mapView)
-        if (scrP != null) {
-            if (scrP.y > binding.mapView.measuredHeight * 0.75) {
-                scrP.offset(0f, 0.25f * binding.mapView.measuredHeight)
-                val curCamPos = binding.mapView.map.cameraPosition
-                binding.mapView.map.move(
-                    CameraPosition(
-                        binding.mapView.pointFToMapPoint(scrP)!!,
-                        curCamPos.zoom,
-                        curCamPos.azimuth,
-                        curCamPos.tilt
-                    ), Animation(Animation.Type.SMOOTH, 2f)
-                ) {
-
-                }
-            }
-        }
-
-        true
-    }
-    private var inputListener: InputListener = object : InputListener {
-        override fun onMapTap(p0: Map, p1: Point) {
-
-        }
-
-        override fun onMapLongTap(p0: Map, p1: Point) {
-
-        }
     }
     private lateinit var searchSession: Session
     private lateinit var searchManager: SearchManager
@@ -118,6 +77,7 @@ class FieldsMapFragment : Fragment(), Session.SearchListener {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentFieldsMapBinding.inflate(layoutInflater, container, false)
+        setupMap()
         setupViews()
         viewModel.getFields().observe(viewLifecycleOwner, { fields ->
             updateMap(fields)
@@ -131,13 +91,47 @@ class FieldsMapFragment : Fragment(), Session.SearchListener {
         return binding.root
     }
 
+    private fun setupMap() {
+        val inputListener: InputListener = object : InputListener {
+            override fun onMapTap(p0: Map, p1: Point) {
+
+            }
+
+            override fun onMapLongTap(p0: Map, p1: Point) {
+
+            }
+        }
+        MapKitFactory.initialize(activity)
+        SearchFactory.initialize(activity)
+        searchManager = SearchFactory.getInstance().createSearchManager(SearchManagerType.COMBINED)
+        userLocationLayer =
+            MapKitFactory.getInstance().createUserLocationLayer(binding.mapView.mapWindow).apply {
+                isVisible = true
+                isHeadingEnabled = true
+            }
+        binding.mapView.map.run {
+            move(
+                CameraPosition(
+                    Point(
+                        args.initPoint?.x ?: CURRENT_POSITION.latitude,
+                        args.initPoint?.y ?: CURRENT_POSITION.longitude
+                    ), args.zoom, 0.0f, 0.0f
+                ),
+                Animation(Animation.Type.SMOOTH, 2f),
+                null
+            )
+            addInputListener(inputListener)
+        }
+
+    }
+
     private fun updateUI(state: MapState) {
         with(binding) {
             fabAdd.isVisible = !state.isEditMode && !state.isSearchMode
             fabCurrentPosition.isVisible = !state.isEditMode && !state.isSearchMode
             fabApply.isVisible = state.isEditMode
             mapView.isEditMode = state.isEditMode
-            if (!state.isEditMode){
+            if (!state.isEditMode) {
                 binding.mapView.map.mapObjects.removeAllPlacemarks()
             }
             if (state.isSearchMode) {
@@ -164,6 +158,36 @@ class FieldsMapFragment : Fragment(), Session.SearchListener {
     }
 
     private fun updateMap(fields: List<Field>) {
+        val mapObjTapListener = MapObjectTapListener { obj, p ->
+            searchMenuItem?.collapseActionView()
+            viewModel.handleSearchMode(false)
+            binding.mapView.map.mapObjects.removeAllPlacemarks()
+            binding.mapView.map.mapObjects.addPlacemark(
+                p,
+                ImageProvider.fromResource(requireContext(), R.mipmap.ic_field_info)
+            )
+            updateBottomSheet(obj.userData as Field)
+            bsb.state = BottomSheetBehavior.STATE_COLLAPSED
+            bsbSearch.state = BottomSheetBehavior.STATE_HIDDEN
+            val scrP = p.toScreenPoint(binding.mapView)
+            if (scrP != null) {
+                if (scrP.y > binding.mapView.measuredHeight * 0.75) {
+                    scrP.offset(0f, 0.25f * binding.mapView.measuredHeight)
+                    val curCamPos = binding.mapView.map.cameraPosition
+                    binding.mapView.map.move(
+                        CameraPosition(
+                            binding.mapView.pointFToMapPoint(scrP)!!,
+                            curCamPos.zoom,
+                            curCamPos.azimuth,
+                            curCamPos.tilt
+                        ), Animation(Animation.Type.SMOOTH, 0.5f)
+                    ) {
+
+                    }
+                }
+            }
+            true
+        }
         binding.mapView.map.mapObjects.clear()
         for (fld in fields) {
             binding.mapView.map.mapObjects.addField(fld.points.map {
@@ -177,31 +201,13 @@ class FieldsMapFragment : Fragment(), Session.SearchListener {
     }
 
     private fun setupViews() {
-        MapKitFactory.initialize(activity)
-        SearchFactory.initialize(activity)
-        searchManager = SearchFactory.getInstance().createSearchManager(SearchManagerType.COMBINED)
-        userLocationLayer =
-            MapKitFactory.getInstance().createUserLocationLayer(binding.mapView.mapWindow).apply {
-                isVisible = true
-                isHeadingEnabled = true
-            }
         with(binding) {
-            mapView.map.run {
-                move(
-                    CameraPosition(
-                        Point(
-                            args.initPoint?.x ?: CURRENT_POSITION.latitude,
-                            args.initPoint?.y ?: CURRENT_POSITION.longitude
-                        ), args.zoom, 0.0f, 0.0f
-                    ),
-                    Animation(Animation.Type.SMOOTH, 2f),
-                    null
-                )
-                addInputListener(inputListener)
-            }
             fabCurrentPosition.setOnClickListener {
-                val permissionStatus = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-                if (permissionStatus == PackageManager.PERMISSION_GRANTED){
+                val permissionStatus = ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+                if (permissionStatus == PackageManager.PERMISSION_GRANTED) {
                     mapView.map.run {
                         userLocationLayer?.cameraPosition()?.target?.let { pnt ->
                             CameraPosition(
@@ -215,8 +221,14 @@ class FieldsMapFragment : Fragment(), Session.SearchListener {
                             )
                         }
                     }
-                }else{
-                    activity?.let { activity -> ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), MainActivity.REQUEST_CODE_PERMISSION_LOCATION) }
+                } else {
+                    activity?.let { activity ->
+                        ActivityCompat.requestPermissions(
+                            activity,
+                            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                            MainActivity.REQUEST_CODE_PERMISSION_LOCATION
+                        )
+                    }
 
                 }
 
@@ -242,26 +254,29 @@ class FieldsMapFragment : Fragment(), Session.SearchListener {
                 }
 
                 override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                    binding.fabAdd.animateFab(slideOffset)
-                    binding.fabApply.animateFab(slideOffset)
-                    binding.fabCurrentPosition.animateFab(slideOffset)
+                    fabAdd.animateFab(slideOffset)
+                    fabApply.animateFab(slideOffset)
+                    fabCurrentPosition.animateFab(slideOffset)
                 }
 
             })
-            bottomSheetSearch.bottomSheetSearchLayout.adapter = SearchResultsAdapter { findedObj ->
-                mapView.map.run {
-                    move(
-                        CameraPosition(
-                            findedObj.location, 11.0f, 0.0f, 0.0f
-                        ),
-                        Animation(Animation.Type.SMOOTH, 2f),
-                        null
-                    )
+            with(bottomSheetSearch.bottomSheetSearchLayout) {
+                adapter = SearchResultsAdapter { findedObj ->
+                    mapView.map.run {
+                        move(
+                            CameraPosition(
+                                findedObj.location, 11.0f, 0.0f, 0.0f
+                            ),
+                            Animation(Animation.Type.SMOOTH, 2f),
+                            null
+                        )
+                    }
+                    bsbSearch.state = BottomSheetBehavior.STATE_HIDDEN
                 }
-                bsbSearch.state = BottomSheetBehavior.STATE_HIDDEN
+                layoutManager =
+                    LinearLayoutManager(requireContext())
             }
-            bottomSheetSearch.bottomSheetSearchLayout.layoutManager =
-                LinearLayoutManager(requireContext())
+
             bottomSheet.btnClose.setOnClickListener {
                 binding.mapView.map.mapObjects.removeAllPlacemarks()
                 bsb.state = BottomSheetBehavior.STATE_HIDDEN
@@ -333,7 +348,7 @@ class FieldsMapFragment : Fragment(), Session.SearchListener {
         dlg.setOnShowListener {
             val button: Button = (dlg as AlertDialog).getButton(AlertDialog.BUTTON_POSITIVE)
             button.setOnClickListener { //Dismiss once everything is OK.
-                when{
+                when {
                     dlgBinding.tiTextName.text.isNullOrBlank() -> {
                         dlgBinding.textNameInputLayout.error =
                             requireContext().getString(R.string.error_blank_name)
@@ -371,10 +386,10 @@ class FieldsMapFragment : Fragment(), Session.SearchListener {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_search, menu)
-        menuItem = menu.findItem(R.id.action_search)
-        searchView = menuItem?.actionView as SearchView
+        searchMenuItem = menu.findItem(R.id.action_search)
+        searchView = searchMenuItem?.actionView as SearchView
         super.onCreateOptionsMenu(menu, inflater)
-        menuItem?.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
+        searchMenuItem?.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
             override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
                 viewModel.handleSearchMode(true)
                 return true

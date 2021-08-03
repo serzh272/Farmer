@@ -13,4 +13,5 @@
     <string name="error_blank_name">Name don\'t may be blank</string>
     <string name="error_blank_culture">Culture don\'t may be blank                                         }</string>
     <string name="add_field_dialog_title">Enter field parameters</string>
+    <string name="delete_field_question">Are you want delete field?</string>
 </resources>

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.serzh272.farmer.R
 import ru.serzh272.farmer.extensions.attrValue
 import ru.serzh272.farmer.data.local.entities.Field
+import ru.serzh272.farmer.extensions.dpToPx
 
 class FieldItemTouchHelperCallback(
     private val adapter: FieldsAdapter,
@@ -94,9 +95,10 @@ class FieldItemTouchHelperCallback(
             bottom = itemView.bottom.toFloat()
         }
         with(bgPaint){
-            color = itemView.context.attrValue(R.attr.colorPrimary)
+            color = itemView.context.attrValue(R.attr.colorPrimaryVariant)
         }
-        canvas.drawRect(bgRect, bgPaint)
+        val r = itemView.context.dpToPx(8)
+        canvas.drawRoundRect(bgRect, r, r,  bgPaint)
     }
 
 }

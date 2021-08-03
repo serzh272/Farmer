@@ -22,9 +22,11 @@ class SharedViewModel @Inject constructor(private val fieldDao: FieldDao):ViewMo
         return fieldDao.getFields()
     }
 
-    fun deleteFieldById(id: Int) {
+    fun deleteFieldById(id: Int, result: (Field?) -> Unit) {
         viewModelScope.launch {
+            val field = fieldDao.getFieldById(id)
             fieldDao.deleteFieldById(id)
+            result(field)
         }
     }
     fun addField(f: Field){

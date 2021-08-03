@@ -6,12 +6,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import ru.serzh272.farmer.R
 import ru.serzh272.farmer.SharedViewModel
@@ -40,7 +42,6 @@ class FieldsFragment : Fragment() {
         binding = FragmentFieldsBinding.inflate(inflater, container, false)
         setupViews()
         viewModel.getFields().observe(viewLifecycleOwner, {fields ->
-            Log.d("M_FieldsFragment", "${fields.size}")
             renderUi(fields)
         })
         return binding.root
@@ -49,8 +50,18 @@ class FieldsFragment : Fragment() {
     private fun setupViews(){
         val divider = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
 
-        val touchCallback = FieldItemTouchHelperCallback(fieldsAdapter) {
-            viewModel.deleteFieldById(it.id)
+        val touchCallback = FieldItemTouchHelperCallback(fieldsAdapter) { fld ->
+            viewModel.deleteFieldById(fld.id){ deletedField ->
+                Snackbar.make(binding.rvFields, R.string.delete_field_question, Snackbar.LENGTH_LONG)
+                    .setAction("Cancel"){
+                        if (deletedField != null) {
+                            viewModel.addField(deletedField)
+                        }
+                    }
+                    .setActionTextColor(R.attr.errorTextColor)
+                    .show()
+            }
+
         }
         val touchHelper = ItemTouchHelper(touchCallback)
         with(binding.rvFields){

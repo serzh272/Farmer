@@ -7,7 +7,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import ru.serzh272.farmer.App
 import ru.serzh272.farmer.data.local.AppDb
 import ru.serzh272.farmer.data.local.dao.FieldDao
 import javax.inject.Singleton

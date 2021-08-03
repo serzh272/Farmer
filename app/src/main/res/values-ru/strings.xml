@@ -14,4 +14,5 @@
     <string name="error_blank_name">Наименование не может быть пустым</string>
     <string name="error_blank_culture">Название культуры не может быть пустым</string>
     <string name="add_field_dialog_title">Введите параметры поля</string>
+    <string name="delete_field_question">Вы действительно хотите удалить поле?</string>
 </resources>
