@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import dagger.hilt.android.AndroidEntryPoint
 import ru.serzh272.farmer.R
 import ru.serzh272.farmer.SharedViewModel
 import ru.serzh272.farmer.databinding.FragmentFieldsBinding
@@ -19,6 +20,7 @@ import ru.serzh272.farmer.data.local.entities.Field
 import ru.serzh272.farmer.ui.adapters.FieldItemTouchHelperCallback
 import ru.serzh272.farmer.ui.adapters.FieldsAdapter
 
+@AndroidEntryPoint
 class FieldsFragment : Fragment() {
     private lateinit var binding: FragmentFieldsBinding
     private val viewModel:SharedViewModel by activityViewModels()

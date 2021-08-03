@@ -11,7 +11,7 @@ fun MapObjectCollection.addField(fieldPoints: List<Point>, fillColor:Int): Polyg
 
     return this.addPolygon(Polygon(LinearRing(fieldPoints), listOf<LinearRing>())).apply {
         this.fillColor = ColorUtils.setAlphaComponent(fillColor, 100)
-        this.strokeWidth = App.applicationContext().dpToPx(2)
+        this.strokeWidth = App.applicationContext().dpToPx(1)
         this.strokeColor = fillColor
     }
 }

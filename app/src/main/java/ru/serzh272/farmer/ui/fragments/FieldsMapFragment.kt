@@ -29,6 +29,7 @@ import com.yandex.mapkit.search.*
 import com.yandex.mapkit.user_location.UserLocationLayer
 import com.yandex.runtime.Error
 import com.yandex.runtime.image.ImageProvider
+import dagger.hilt.android.AndroidEntryPoint
 import ru.serzh272.farmer.MainActivity
 import ru.serzh272.farmer.R
 import ru.serzh272.farmer.SharedViewModel
@@ -44,6 +45,8 @@ import java.util.*
 
 private val CURRENT_POSITION = Point(52.058035, 113.485333)
 
+
+@AndroidEntryPoint
 class FieldsMapFragment : Fragment(), Session.SearchListener {
 
     private var searchView: SearchView? = null
