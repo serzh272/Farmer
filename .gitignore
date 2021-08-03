@@ -13,3 +13,7 @@
 .cxx
 /.idea/
 /.gradle/
+/app/release/
+/app/proguard-rules.pro
+/gradle/wrapper/gradle-wrapper.jar
+/app/libs/
