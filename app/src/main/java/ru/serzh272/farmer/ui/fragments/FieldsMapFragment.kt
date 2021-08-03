@@ -3,6 +3,8 @@ package ru.serzh272.farmer.ui.fragments
 import android.Manifest
 import android.app.AlertDialog
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Bundle
 import android.view.*
@@ -11,6 +13,7 @@ import android.widget.Button
 import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.BitmapCompat
 import androidx.core.math.MathUtils
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -38,6 +41,7 @@ import ru.serzh272.farmer.data.local.entities.Field
 import ru.serzh272.farmer.databinding.FieldInputDialogBinding
 import ru.serzh272.farmer.databinding.FragmentFieldsMapBinding
 import ru.serzh272.farmer.extensions.*
+import ru.serzh272.farmer.extensions.Utils.fromVectorResource
 import ru.serzh272.farmer.models.MapState
 import ru.serzh272.farmer.models.SearchMapObject
 import ru.serzh272.farmer.ui.adapters.SearchResultsAdapter
@@ -274,6 +278,11 @@ class FieldsMapFragment : Fragment(), Session.SearchListener {
                             null
                         )
                     }
+                    binding.mapView.map.mapObjects.removeAllPlacemarks()
+                    binding.mapView.map.mapObjects.addPlacemark(
+                        findedObj.location,
+                        fromVectorResource(context, R.drawable.ic_location_on_24)
+                    )
                     bsbSearch.state = BottomSheetBehavior.STATE_HIDDEN
                 }
                 layoutManager =
@@ -338,8 +347,8 @@ class FieldsMapFragment : Fragment(), Session.SearchListener {
         val dlg = AlertDialog.Builder(requireContext())
             .setTitle(context?.getString(R.string.add_field_dialog_title))
             .setView(dlgBinding.root)
-            .setPositiveButton("Ok", null)
-            .setNegativeButton("Cancel") { _, _ ->
+            .setPositiveButton(R.string.ok_text, null)
+            .setNegativeButton(R.string.cancel_text) { _, _ ->
                 viewModel.handleChangeEditMode(false)
                 result(null)
             }

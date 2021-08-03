@@ -15,4 +15,6 @@
     <string name="error_blank_culture">Название культуры не может быть пустым</string>
     <string name="add_field_dialog_title">Введите параметры поля</string>
     <string name="delete_field_question">Вы действительно хотите удалить поле?</string>
+    <string name="sowing_date">Дата посева:</string>
+    <string name="cancel_text">Отмена</string>
 </resources>

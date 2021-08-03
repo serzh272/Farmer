@@ -53,7 +53,7 @@ class FieldsFragment : Fragment() {
         val touchCallback = FieldItemTouchHelperCallback(fieldsAdapter) { fld ->
             viewModel.deleteFieldById(fld.id){ deletedField ->
                 Snackbar.make(binding.rvFields, R.string.delete_field_question, Snackbar.LENGTH_LONG)
-                    .setAction("Cancel"){
+                    .setAction(R.string.cancel_text){
                         if (deletedField != null) {
                             viewModel.addField(deletedField)
                         }

@@ -34,6 +34,10 @@
             android:inputType="textPersonName"
             tools:text="name" />
     </com.google.android.material.textfield.TextInputLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sowing_date"/>
     <DatePicker
         android:id="@+id/date_picker"
         android:layout_height="wrap_content"
