@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import ru.serzh272.farmer.data.PrefManager
 import ru.serzh272.farmer.data.local.dao.FieldDao
 import ru.serzh272.farmer.data.local.entities.Field
@@ -63,11 +64,8 @@ class SharedViewModel @Inject constructor(private val fieldDao: FieldDao):ViewMo
         }
     }
 
-    fun getAppSettings(res: (AppSettings) -> Unit){
-        viewModelScope.launch {
-            res(prefManager.settings.first())
-        }
-
+    fun getAppSettings(): AppSettings{
+        return runBlocking { prefManager.settings.first() }
     }
 
     fun setAppSettings(set: AppSettings){

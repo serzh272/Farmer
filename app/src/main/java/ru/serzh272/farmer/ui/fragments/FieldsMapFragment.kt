@@ -112,20 +112,19 @@ class FieldsMapFragment : Fragment(), Session.SearchListener {
                 isVisible = true
                 isHeadingEnabled = true
             }
-        viewModel.getAppSettings { appSettings ->
-            binding.mapView.map.run {
-                move(
-                    CameraPosition(
-                        Point(
-                            args.initPoint?.x ?: appSettings.initLatitude,
-                            args.initPoint?.y ?: appSettings.initLongitude
-                        ), args.zoom, 0.0f, 0.0f
-                    ),
-                    Animation(Animation.Type.SMOOTH, 0.2f),
-                    null
-                )
-                addInputListener(inputListener)
-            }
+        val appSettings = viewModel.getAppSettings()
+        binding.mapView.map.run {
+            move(
+                CameraPosition(
+                    Point(
+                        args.initPoint?.x ?: appSettings.initLatitude,
+                        args.initPoint?.y ?: appSettings.initLongitude
+                    ), args.zoom, 0.0f, 0.0f
+                ),
+                Animation(Animation.Type.SMOOTH, 0.2f),
+                null
+            )
+            addInputListener(inputListener)
         }
     }
 
