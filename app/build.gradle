@@ -63,8 +63,14 @@ dependencies {
 
     //lifecycle
     implementation 'android.arch.lifecycle:extensions:1.1.1'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     annotationProcessor 'android.arch.lifecycle:common-java8:1.1.1'
+
+    //datastore
+    implementation 'androidx.datastore:datastore-core:1.0.0-rc02'
+    implementation 'androidx.datastore:datastore-preferences:1.0.0-rc02'
+
 
     //room
     implementation 'androidx.room:room-runtime:2.3.0'

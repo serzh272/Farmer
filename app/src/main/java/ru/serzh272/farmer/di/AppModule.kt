@@ -27,8 +27,9 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideFieldsDataSourse(database: AppDb): FieldDao{
+    fun provideFieldsDataSource(database: AppDb): FieldDao{
         return database.fieldDao()
     }
+
 }
 

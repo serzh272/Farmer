@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import ru.serzh272.farmer.data.local.AppDb
-import ru.serzh272.farmer.data.local.DbManager
+import ru.serzh272.farmer.data.PrefManager
 import ru.serzh272.farmer.data.local.dao.FieldDao
 import ru.serzh272.farmer.data.local.entities.Field
 import ru.serzh272.farmer.models.MapState
@@ -18,6 +18,8 @@ import javax.inject.Inject
 class SharedViewModel @Inject constructor(private val fieldDao: FieldDao):ViewModel() {
     private val stateLiveData by lazy { MutableLiveData(MapState()) }
     private val searchResultsLiveData by lazy { MutableLiveData(listOf<SearchMapObject>()) }
+    private val prefManager = PrefManager()
+
     fun getFields(): LiveData<MutableList<Field>> {
         return fieldDao.getFields()
     }
@@ -59,5 +61,17 @@ class SharedViewModel @Inject constructor(private val fieldDao: FieldDao):ViewMo
         if (state != null) {
             stateLiveData.value = state.copy(isSearchMode = isSearch)
         }
+    }
+
+    fun getAppSettings(res: (AppSettings) -> Unit){
+        viewModelScope.launch {
+            res(prefManager.settings.first())
+        }
+
+    }
+
+    fun setAppSettings(set: AppSettings){
+        prefManager.latitude = set.initLatitude
+        prefManager.longitude = set.initLongitude
     }
 }

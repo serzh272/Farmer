@@ -30,6 +30,7 @@ import com.yandex.mapkit.user_location.UserLocationLayer
 import com.yandex.runtime.Error
 import com.yandex.runtime.image.ImageProvider
 import dagger.hilt.android.AndroidEntryPoint
+import ru.serzh272.farmer.AppSettings
 import ru.serzh272.farmer.MainActivity
 import ru.serzh272.farmer.R
 import ru.serzh272.farmer.SharedViewModel
@@ -41,10 +42,6 @@ import ru.serzh272.farmer.models.MapState
 import ru.serzh272.farmer.models.SearchMapObject
 import ru.serzh272.farmer.ui.adapters.SearchResultsAdapter
 import java.util.*
-
-
-private val CURRENT_POSITION = Point(52.058035, 113.485333)
-
 
 @AndroidEntryPoint
 class FieldsMapFragment : Fragment(), Session.SearchListener {
@@ -91,6 +88,12 @@ class FieldsMapFragment : Fragment(), Session.SearchListener {
         return binding.root
     }
 
+    override fun onDestroy() {
+        val pos = binding.mapView.map.cameraPosition.target
+        viewModel.setAppSettings(AppSettings(pos.latitude, pos.longitude))
+        super.onDestroy()
+    }
+
     private fun setupMap() {
         val inputListener: InputListener = object : InputListener {
             override fun onMapTap(p0: Map, p1: Point) {
@@ -109,20 +112,21 @@ class FieldsMapFragment : Fragment(), Session.SearchListener {
                 isVisible = true
                 isHeadingEnabled = true
             }
-        binding.mapView.map.run {
-            move(
-                CameraPosition(
-                    Point(
-                        args.initPoint?.x ?: CURRENT_POSITION.latitude,
-                        args.initPoint?.y ?: CURRENT_POSITION.longitude
-                    ), args.zoom, 0.0f, 0.0f
-                ),
-                Animation(Animation.Type.SMOOTH, 2f),
-                null
-            )
-            addInputListener(inputListener)
+        viewModel.getAppSettings { appSettings ->
+            binding.mapView.map.run {
+                move(
+                    CameraPosition(
+                        Point(
+                            args.initPoint?.x ?: appSettings.initLatitude,
+                            args.initPoint?.y ?: appSettings.initLongitude
+                        ), args.zoom, 0.0f, 0.0f
+                    ),
+                    Animation(Animation.Type.SMOOTH, 0.2f),
+                    null
+                )
+                addInputListener(inputListener)
+            }
         }
-
     }
 
     private fun updateUI(state: MapState) {

@@ -21,3 +21,8 @@ class App: Application() {
     }
 
 }
+
+data class AppSettings(
+    val initLatitude: Double,
+    val initLongitude: Double
+)
